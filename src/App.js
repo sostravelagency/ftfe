@@ -9,17 +9,22 @@ import Staff from './component/Staff/Staff'
 import Home from './component/Home/Home'
 import ConfirmStaff from './component/ConfirmStaff/ConfirmStaff'
 import CameraFaceDetection from './component/Test/Test'
+import Cookies from 'js-cookie'
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path={"/"} element={<Navigate to={"/time-keeping"} />} />
+        {
+          Cookies.get("login")=== "true" ? 
+        <Route path={"/"} element={<Home />} />
+        :
+        <Route path={"/"} element={<Navigate to={"/timekeeping"} />} />
+        }
         <Route path={"/signup"} element={<Signup />} />
-        <Route path={"/login"} element={<Login />} />
+        {/* <Route path={"/login"} element={<Login />} /> */}
         <Route path={"/forgot-password"} element={<ForgotPassword />} />
         <Route path={"/timekeeping"} element={<TimeKeeping />} />
-        <Route path={"/"} element={<Home />} />
         <Route path={"/information"} element={<Information />} />
         <Route path={"/time-sheets"} element={<TimeSheet />} />
         <Route path={"/staff"} element={<Staff />} />

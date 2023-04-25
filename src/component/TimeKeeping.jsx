@@ -8,6 +8,8 @@ import { Button, CircularProgress } from '@mui/material';
 import swal from 'sweetalert';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import timekeeping from '../api/time-keeping';
+import moment from 'moment';
 
 const TimeKeeping = () => {
   return (
@@ -40,7 +42,7 @@ const CameraCapture = () => {
       })
       setLoading(()=> false)
       const result= await res.json()
-      if(result?.result=== "no identity") {
+      if(result?.result=== "no indentity") {
         return swal("Thông báo", "Chấm công thất bại, không nhận ra được khuôn mặt của bạn trong hệ thống", "error")
       }
       if(result?.result=== "fake face") {
@@ -54,9 +56,17 @@ const CameraCapture = () => {
       //   return swal("Thông báo", "Chấm công thất bại, đây không phải là gương mặt của bạn", "error")
       // }
       if(result?.result?.includes("_")) {
-        Cookies.set("uid", result?.replace("_"))
-        return swal("Thông báo", "Chấm công thành công", "success").then(()=> navigate("/", {replace: true}))
+        console.log(123)
+        Cookies.set("uid", result?.result?.replace("_"))
+        return swal("Thông báo", "Chấm công thành công", "success")
+        .then(()=> Cookies.set("uid", result?.result?.replace("_", "")))
+        .then(()=> Cookies.set("login", true))
+        .then(async()=> {
+          const result2= await timekeeping(result?.result?.replace("_", ""), new Date(), moment(new Date()).format("HH") > 8 ? 0 : 1, moment(new Date()).format("DD-MM-YYYY"))
 
+        })
+        .then(()=> window.location.href= window.location.origin)
+        
       }
       
     };

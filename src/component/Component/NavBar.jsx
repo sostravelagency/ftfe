@@ -12,11 +12,6 @@ const menu = (
             Danh sách nhân viên
       </Link>
     </Menu.Item>
-    <Menu.Item key={"/attendance-management"}>
-      <Link to="/attendance-management">
-        Quản lý công
-      </Link>
-    </Menu.Item>
   </Menu>
 );
 

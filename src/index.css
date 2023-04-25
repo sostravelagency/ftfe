@@ -162,7 +162,7 @@ button:focus-visible {
   border-right: 1px solid #e1e1e1;
 }
 .react-calendar__month-view__days__day {
-  border-right: 1px solid #e1e1e1;
+  border-right: 1px solid #ae9494;
   border-bottom: 1px solid #e1e1e1;
 }
 
@@ -176,4 +176,8 @@ button:focus-visible {
 
 .ant-menu-title-content {
   
+}
+
+.react-calendar {
+  width: 500px !important;
 }

@@ -21,7 +21,7 @@ const Information = () => {
         {data?.login === false ? <div>
             <div>Bạn chưa đăng nhập</div>
             <div>Đăng nhập để tiếp tục</div>
-            <Button type={"primary"} onClick={()=> navigate("/login")}>Đăng nhập</Button>
+            <Button type={"primary"} onClick={()=> navigate("/")}>Đăng nhập</Button>
         </div> : (
           <>
             <div
@@ -35,31 +35,22 @@ const Information = () => {
             >
               <div>
                 <div style={{ textAlign: "center", marginBottom: 12 }}>
-                  Nguyễn Minh Anh
+                  {data?.name}
                 </div>
                 <Image
-                  src={""}
+                  src={"http://localhost:5000/db_face/"+ data?.id+ "_.png"}
                   style={{ width: 200, aspectRatio: 1 / 1 }}
                   alt={""}
                 />
               </div>
               <div>
                 <div style={{ marginBottom: 12 }}>
-                  Họ và tên: Nguyễn Minh Anh
+                  Họ và tên: {data?.name}
                 </div>
-                <div style={{ marginBottom: 12 }}>
-                  Ngày tháng năm sinh: 03/12/2000
-                </div>
-                <div style={{ marginBottom: 12 }}>Email: minhanh@gmail.com</div>
-                <div style={{ marginBottom: 12 }}>SDT: 0123</div>
+                <div style={{ marginBottom: 12 }}>Email: {data?.email}</div>
+                <div style={{ marginBottom: 12 }}>SDT: {data?.phone}</div>
                 <div style={{ marginBottom: 12 }}>Chức vụ: Nhân viên</div>
               </div>
-            </div>
-            <div style={{ width: "100%", maxWidth: 600, direction: "rtl" }}>
-              <Button type={"primary"} style={{ marginLeft: 12 }}>
-                Sửa
-              </Button>
-              <Button type={"primary"}>Lưu</Button>
             </div>
           </>
         )}

@@ -1,36 +1,31 @@
 import { Image } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import gettimekeepingstaff from "../../api/get-timekeeping-staff";
+import moment from "moment";
+import get_detail_staff from "../../api/get_detail_staff";
 
 function TimeSheets() {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [attendanceDays, setAttendanceDays] = useState([
-    new Date(2023, 4, 1),
-    new Date(2023, 4, 5),
-    new Date(2023, 4, 10),
-    new Date(2023, 4, 15),
-  ]);
+  const [attendanceDays, setAttendanceDays] = useState([]);
+  const [user, setUser]= useState()
+  useEffect(()=> {
+    (async ()=> {
+      const result = await get_detail_staff();
+      return setUser(result);
+    })()
+  }, [])
+
+  useEffect(() => {
+    (async () => {
+      const result = await gettimekeepingstaff();
+      return setAttendanceDays(result);
+    })();
+  }, []);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-  };
-
-  const isAttendanceDay = (date) => {
-    return attendanceDays.some(
-      (attendanceDate) =>
-        attendanceDate.getDate() === date.getDate() &&
-        attendanceDate.getMonth() === date.getMonth() &&
-        attendanceDate.getFullYear() === date.getFullYear()
-    );
-  };
-
-  const getTileClassName = ({ date }) => {
-    if (isAttendanceDay(date)) {
-      return "attendance-day";
-    } else {
-      return "absent-day";
-    }
   };
 
   return (
@@ -47,26 +42,33 @@ function TimeSheets() {
       <div>
         <div>
           <div style={{ textAlign: "center", marginBottom: 12 }}>
-            Nguyễn Minh Anh
+            {user?.name}
           </div>
-          <Image src={""} style={{ width: 200, aspectRatio: 1 / 1 }} alt={""} />
+          <Image src={"http://localhost:5000/db_face/"+ user?.id+ "_.png"} style={{ width: 200, aspectRatio: 1 / 1 }} alt={""} />
         </div>
       </div>
       <div>
         <Calendar
-          tileContent={({ date, view }) =>
-            {
-                console.log(date)
-             return (
-              <div className="checked-date">
-                <div className="checked-date-text">Đã chấm công</div>
-              </div>
-            )
-            }
-          }
+          
+          tileContent={({ date, view }) => {
+            return (
+              <>
+                {attendanceDays?.filter(
+                  (item) =>
+                    moment(item?.date).format("DD-MM-YYYY") ===
+                    moment(date).format("DD-MM-YYYY")
+                )?.length > 0 ? (
+                  <div className="checked-date">
+                    <div className="checked-date-text" style={{height: 50}}>Đã chấm công</div>
+                  </div>
+                ) : <div className="">
+                    <div className="checked-date-text" style={{height: 50}}></div>
+                  </div>}
+              </>
+            );
+          }}
           onChange={handleDateChange}
           value={selectedDate}
-          tileClassName={getTileClassName}
         />
       </div>
     </div>

@@ -1,4 +1,5 @@
-import React from "react";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -7,43 +8,52 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,
+  // ResponsiveContainer,
 } from "recharts";
+import stats from "../../api/stats";
 
-const data = [
-  {
-    date: "2022-01-01",
-    onTime: 5,
-    late: 2,
-    absent: 1,
-  },
-  {
-    date: "2022-01-02",
-    onTime: 6,
-    late: 1,
-    absent: 0,
-  },
-  {
-    date: "2022-01-03",
-    onTime: 4,
-    late: 3,
-    absent: 0,
-  },
-  {
-    date: "2022-01-04",
-    onTime: 7,
-    late: 0,
-    absent: 0,
-  },
-  {
-    date: "2022-01-05",
-    onTime: 5,
-    late: 1,
-    absent: 1,
-  },
-];
+
 
 const Chart = () => {
+  const [d, setD]= useState([])
+  useEffect(()=> {
+    (async ()=> {
+      const result= await stats()
+      return setD(result)
+    })()
+  }, [])
+  const data = [
+    {
+      date: moment(new Date()).format("DD-MM-YYYY"),
+      onTime: d?.filter(item=> moment(item?.date).format("DD-MM-YYYY") === moment(new Date()).format("DD-MM-YYYY") && parseInt(item?.status)=== 1)?.length,
+      late: d?.filter(item=> moment(item?.date).format("DD-MM-YYYY") === moment(new Date()).format("DD-MM-YYYY") && parseInt(item?.status)=== 0)?.length,
+      absent: d?.filter(item=> moment(item?.date).format("DD-MM-YYYY") === moment(new Date()).format("DD-MM-YYYY") && parseInt(item?.status)=== 2)?.length,
+    },
+    {
+      date: moment(new Date()).subtract("days", 1).format("DD-MM-YYYY"),
+      onTime: d?.filter(item=> moment(item?.date).format("DD-MM-YYYY") === moment(new Date()).subtract("days", 1).format("DD-MM-YYYY") && parseInt(item?.status)=== 1)?.length,
+      late: d?.filter(item=> moment(item?.date).format("DD-MM-YYYY") === moment(new Date()).subtract("days", 1).format("DD-MM-YYYY") && parseInt(item?.status)=== 0)?.length,
+      absent: d?.filter(item=> moment(item?.date).format("DD-MM-YYYY") === moment(new Date()).subtract("days", 1).format("DD-MM-YYYY") && parseInt(item?.status)=== 2)?.length,
+    },
+    {
+      date: moment(new Date()).subtract("days", 2).format("DD-MM-YYYY"),
+      onTime: d?.filter(item=> moment(item?.date).format("DD-MM-YYYY") === moment(new Date()).subtract("days", 2).format("DD-MM-YYYY") && parseInt(item?.status)=== 1)?.length,
+      late: d?.filter(item=> moment(item?.date).format("DD-MM-YYYY") === moment(new Date()).subtract("days", 2).format("DD-MM-YYYY") && parseInt(item?.status)=== 0)?.length,
+      absent: d?.filter(item=> moment(item?.date).format("DD-MM-YYYY") === moment(new Date()).subtract("days", 2).format("DD-MM-YYYY") && parseInt(item?.status)=== 2)?.length,
+    },
+    {
+      date: moment(new Date()).subtract("days", 3).format("DD-MM-YYYY"),
+      onTime: d?.filter(item=> moment(item?.date).format("DD-MM-YYYY") === moment(new Date()).subtract("days", 3).format("DD-MM-YYYY") && parseInt(item?.status)=== 1)?.length,
+      late: d?.filter(item=> moment(item?.date).format("DD-MM-YYYY") === moment(new Date()).subtract("days", 3).format("DD-MM-YYYY") && parseInt(item?.status)=== 0)?.length,
+      absent: d?.filter(item=> moment(item?.date).format("DD-MM-YYYY") === moment(new Date()).subtract("days", 3).format("DD-MM-YYYY") && parseInt(item?.status)=== 2)?.length,
+    },
+    {
+      date: moment(new Date()).subtract("days", 4).format("DD-MM-YYYY"),
+      onTime: d?.filter(item=> moment(item?.date).format("DD-MM-YYYY") === moment(new Date()).subtract("days", 4).format("DD-MM-YYYY") && parseInt(item?.status)=== 1)?.length,
+      late: d?.filter(item=> moment(item?.date).format("DD-MM-YYYY") === moment(new Date()).subtract("days", 4).format("DD-MM-YYYY") && parseInt(item?.status)=== 0)?.length,
+      absent: d?.filter(item=> moment(item?.date).format("DD-MM-YYYY") === moment(new Date()).subtract("days", 4).format("DD-MM-YYYY") && parseInt(item?.status)=== 2)?.length,
+    },
+  ];
   return (
     <BarChart
       width={800}

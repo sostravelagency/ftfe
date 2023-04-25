@@ -17,11 +17,9 @@ const Home = () => {
         }}
       >
         <div style={{width: "100%", display: "flex", justifyContent: "center", flexDirection: "column", gap: 50, alignItems: "center"}}>
-            <div style={{padding: 20, border: "1px solid #000", textAlign: "center", width: "max-content", height: "max-content"}}>Chấm công</div>
-
-            <div>   
-                <Chart />
-            </div>
+          <div>   
+            <Chart />
+          </div>
         </div>
       </div>
     </div>
